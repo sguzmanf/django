@@ -2,6 +2,7 @@ from pathlib import Path
 #Deploy
 import os
 import dj_database_url
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -11,16 +12,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = 'django-insecure-6xz&d2w$$lzr-4k!1az+^hp6b8w$8-4t!rdeh+pjx2dita0(z0'
 #Deploy
-SECRET_KEY = os.environ.get('SECRET_KEY',default='')
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#Deploy
+DEBUG = config("DEBUG",cast=bool)
+AGE=config
+ALLOWED_HOSTS =config("ALLOWED_HOSTS").split(",")
+
 #Deploy
 DEBUG = 'RENDER' not in os.environ
 
-ALLOWED_HOSTS = []
 #Deploy
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
@@ -77,7 +80,18 @@ WSGI_APPLICATION = 'pruebadjango.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-#deploy                                                         segcliente va la bd que esta en render que has creado
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+
+#deploy                                                         bd va la bd que esta en render que has creado
+DATABASES = {
+    'default': dj_database_url.parse(config("DATABASE_URL"))
+    }
 
 
 DATABASES = {
