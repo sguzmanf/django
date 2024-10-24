@@ -19,7 +19,7 @@ SECRET_KEY = config("SECRET_KEY")
 #Deploy
 DEBUG = config("DEBUG",cast=bool)
 AGE=config
-ALLOWED_HOSTS =config("ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = config("ALLOWED_HOSTS").split(",")
 
 #Deploy
 DEBUG = 'RENDER' not in os.environ
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'miapp',
     #Deploy
     'whitenoise.runserver_nostatic',  # Para usar Whitenoise en modo desarrollo
 
@@ -47,7 +48,6 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
      #Deploy
     'whitenoise.middleware.WhiteNoiseMiddleware',    # Ubica Whitenoise después de SecurityMiddleware
-
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -61,7 +61,8 @@ ROOT_URLCONF = 'pruebadjango.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+    
+        'DIRS': [os.path.join(BASE_DIR, 'myapp/templates')],  # Agrega esta línea
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -141,7 +142,7 @@ STATIC_URL = 'static/'
 
 #Deploy
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORE ='whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 
