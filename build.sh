@@ -12,4 +12,5 @@ python manage.py migrate
 
 # Iniciar la aplicación con el puerto proporcionado por Render
 PORT=${PORT:-8000}  # Usa el puerto proporcionado por Render, o 8000 por defecto
-#gunicorn pruebadjango.wsgi --bind 0.0.0.0:$PORT
+echo "Iniciando Gunicorn en el puerto $PORT"
+gunicorn pruebadjango.wsgi --bind 0.0.0.0:$PORT
